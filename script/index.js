@@ -3,12 +3,25 @@ const loadLessons = () => {
     .then((res) => res.json()) // promise of json data
     .then((json) => displayLesson(json.data));
 };
+const removeActive = () => {
+  const lessonButtons = document.querySelectorAll(".lesson-btn");
+  // console.log(lessonButtons);
+  lessonButtons.forEach((btn) => btn.classList.remove("active"));
+};
+
 const loadLevelWord = (id) => {
   //   console.log(id);
   const url = `https://openapi.programming-hero.com/api/level/${id}`;
   fetch(url)
     .then((res) => res.json())
-    .then((data) => displayLevelWord(data.data));
+    .then((data) => {
+      removeActive(); // remove all active class
+      const clickBtn = document.getElementById(`lesson-btn-${id}`);
+      // console.log(clickBtn);
+      clickBtn.classList.add("active"); // add active class to the clicked button
+
+      displayLevelWord(data.data);
+    });
 };
 
 const displayLevelWord = (words) => {
@@ -52,7 +65,7 @@ const displayLevelWord = (words) => {
         </div>
 
         <div class="flex justify-between items-center pt-4">
-          <button class="btn bg-[#1A91FF10] hover:bg-[#1A91FF80] hover:text-white border-none">
+          <button onclick = "my_modal_5.showModal()" class="btn bg-[#1A91FF10] hover:bg-[#1A91FF80] hover:text-white border-none">
             <i class="fa-solid fa-circle-info"></i>
           </button>
           <button class="btn bg-[#1A91FF10] hover:bg-[#1A91FF80] hover:text-white border-none">
@@ -77,7 +90,7 @@ const displayLesson = (lessons) => {
 
     const btnDiv = document.createElement("div");
     btnDiv.innerHTML = `
-                 <button onclick = "loadLevelWord(${lesson.level_no})" class="btn btn-outline btn-primary"
+                 <button id = "lesson-btn-${lesson.level_no}" onclick = "loadLevelWord(${lesson.level_no})" class="btn btn-outline btn-primary lesson-btn"
                   ><i class="fa-solid fa-book-open"></i>Lesson - ${lesson.level_no}</button>
     `;
 
