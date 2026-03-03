@@ -24,6 +24,58 @@ const loadLevelWord = (id) => {
     });
 };
 
+// {
+//     "word": "Sincere",
+//     "meaning": "সত্‍ / আন্তরিক",
+//     "pronunciation": "সিনসিয়ার",
+//     "level": 1,
+//     "sentence": "He gave a sincere apology.",
+//     "points": 1,
+//     "partsOfSpeech": "adjective",
+//     "synonyms": [
+//         "honest",
+//         "genuine",
+//         "truthful"
+//     ],
+//     "id": 19
+// }
+
+const loadWordDetail = async (id) => {
+  const url = `https://openapi.programming-hero.com/api/word/${id}`;
+
+  const res = await fetch(url);
+  const details = await res.json();
+  displayWordDetails(details.data);
+};
+const displayWordDetails = (word) => {
+  console.log(word);
+  const detailsBox = document.getElementById("details-container");
+  detailsBox.innerHTML = `
+  <div class="">
+            <h2 class="text-2xl font-bold">
+              ${word.word} (<i class="fa-solid fa-microphone-lines"></i> : ${word.pronunciation})
+            </h2>
+          </div>
+          <div class="">
+            <h2 class="font-bold">Meaning</h2>
+            <p>${word.meaning}</p>
+          </div>
+          <div class="">
+            <h2 class="font-bold">Example</h2>
+            <p>${word.sentence}</p>
+          </div>
+          <div class="">
+            <h2 class="font-bold">সমার্থক শব্দ গুলো</h2>
+            <span class="btn">Syn1</span>
+            <span class="btn">Syn2</span>
+            <span class="btn">Syn3</span>
+          </div>
+  
+  `;
+
+  document.getElementById("word_modal").showModal();
+};
+
 const displayLevelWord = (words) => {
   const wordContainer = document.getElementById("word-container");
   wordContainer.innerHTML = "";
@@ -65,7 +117,7 @@ const displayLevelWord = (words) => {
         </div>
 
         <div class="flex justify-between items-center pt-4">
-          <button onclick = "my_modal_5.showModal()" class="btn bg-[#1A91FF10] hover:bg-[#1A91FF80] hover:text-white border-none">
+          <button onclick = "loadWordDetail(${word.id})" class="btn bg-[#1A91FF10] hover:bg-[#1A91FF80] hover:text-white border-none">
             <i class="fa-solid fa-circle-info"></i>
           </button>
           <button class="btn bg-[#1A91FF10] hover:bg-[#1A91FF80] hover:text-white border-none">
@@ -99,4 +151,5 @@ const displayLesson = (lessons) => {
     levelContainer.append(btnDiv);
   }
 };
+
 loadLessons();
