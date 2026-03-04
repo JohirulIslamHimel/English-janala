@@ -180,6 +180,7 @@ const displayLesson = (lessons) => {
 loadLessons();
 
 document.getElementById("btn-search").addEventListener("click", () => {
+  manageSpinner(true);
   removeActive();
   const input = document.getElementById("input-search");
   const searchValue = input.value.trim().toLowerCase();
